@@ -2,6 +2,7 @@ import { RequestHandler, Router } from 'express'
 import { AnySchema, isError as isValidationError } from 'joi'
 import { RequestHandlerError } from './error'
 import logger from './logger'
+import keycloak_pass from './passport'
 
 export type RequestHandlerRequest<Query, Params, ReqBody> = {
     query?: Query
@@ -20,9 +21,10 @@ export type UseRequestHandlerConfig<
     ReqBody,
     ResBody,
 > = {
-    router: Router,
-    path?: string,
-    method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head',
+    router: Router
+    path?: string
+    noAuth?: boolean
+    method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head'
     requestHandler: (req: RequestHandlerRequest<Query, Params, ReqBody>) =>
         Promise<RequestHandlerResponse<ResBody>> | RequestHandlerResponse<ResBody>
     querySchema?: AnySchema<Query>
@@ -38,11 +40,10 @@ export const useRequestHandler = <
 >({
     router,
     path,
+    noAuth,
     method,
     requestHandler,
-    querySchema,
-    paramsSchema,
-    bodySchema,
+    querySchema, paramsSchema, bodySchema,
 }: UseRequestHandlerConfig<Query, Params, ReqBody, ResBody>
 ) => {
     type _ResBody = ResBody | { message: string } | { messages: string[] };
@@ -89,5 +90,6 @@ export const useRequestHandler = <
             }
         }
     }
-    router[method](path || "", handler)
+
+    router[method](path || "", noAuth || keycloak_pass, handler)
 }
