@@ -2,12 +2,12 @@ import { RequestHandler, Router } from 'express'
 import { AnySchema, isError as isValidationError } from 'joi'
 import { RequestHandlerError } from './error'
 import logger from './logger'
-import keycloak_pass from './passport'
+import { localPass } from './passport'
 
 export type RequestHandlerRequest<Query, Params, ReqBody> = {
-    query?: Query
-    params?: Params
-    body?: ReqBody
+    query: Query
+    params: Params
+    body: ReqBody
 }
 
 export type RequestHandlerResponse<ResBody> = {
@@ -59,9 +59,9 @@ export const useRequestHandler = <
 
             // request handler
             const response = await requestHandler({
-                query: querySchema && req.query,
-                params: paramsSchema && req.params,
-                body: bodySchema && req.body,
+                query: req.query,
+                params: req.params,
+                body: req.body,
             });
 
             // send response
@@ -91,5 +91,5 @@ export const useRequestHandler = <
         }
     }
 
-    router[method](path || "", noAuth || keycloak_pass, handler)
+    router[method](path || "", noAuth || localPass, handler)
 }

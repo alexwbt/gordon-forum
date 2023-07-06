@@ -1,18 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import express from "express";
 import { useRequestHandler } from '../lib/router';
-import { CreateUserRequest, DeleteUserRequest, GetUserRequest, UpdateUserRequest } from '../schema/user';
+import { CreatePostRequest, DeletePostRequest, GetPostRequest, UpdatePostRequest } from '../schema/post';
 import { RequestHandlerError } from '../lib/error';
 
 const prisma = new PrismaClient()
 
-const userRouter = express.Router()
+const postRouter = express.Router()
 
 // Add User
 useRequestHandler({
-    router: userRouter,
+    router: postRouter,
     method: "post",
-    bodySchema: CreateUserRequest,
+    bodySchema: CreatePostRequest,
     requestHandler: async ({ body, query, params }) => {
         const { name, email } = body
         const user = await prisma.user.create({
@@ -27,7 +27,7 @@ useRequestHandler({
 
 // Get All Users
 useRequestHandler({
-    router: userRouter,
+    router: postRouter,
     method: "get",
     path: '/all',
     requestHandler: async () => {
@@ -41,10 +41,10 @@ useRequestHandler({
 
 // Get User by Id
 useRequestHandler({
-    router: userRouter,
+    router: postRouter,
     method: "get",
     path: '/:id',
-    paramsSchema: GetUserRequest,
+    paramsSchema: GetPostRequest,
     requestHandler: async ({ body, query, params }) => {
         const { id } = params
         const user = await prisma.user.findFirst({
@@ -59,9 +59,9 @@ useRequestHandler({
 
 // Update User (partial)
 useRequestHandler({
-    router: userRouter,
+    router: postRouter,
     method: "patch",
-    bodySchema: UpdateUserRequest,
+    bodySchema: UpdatePostRequest,
     requestHandler: async ({ body, query, params }) => {
         const { id, name, email } = body
         const user = await prisma.user.update({
@@ -80,9 +80,9 @@ useRequestHandler({
 
 // Delete User
 useRequestHandler({
-    router: userRouter,
+    router: postRouter,
     method: "delete",
-    bodySchema: DeleteUserRequest,
+    bodySchema: DeletePostRequest,
     requestHandler: async ({ body, query, params }) => {
         const { id } = body
         const user = await prisma.user.delete({
@@ -105,4 +105,4 @@ useRequestHandler({
     }
 })
 
-export default userRouter
+export default postRouter

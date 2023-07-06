@@ -7,3 +7,17 @@ export interface CreateUserRequest {
   email: string;
   name: string;
 }
+
+export interface DeleteUserRequest {
+  id: number;
+}
+
+export interface GetUserRequest {
+  id: number;
+}
+
+export interface UpdateUserRequest {
+  email?: string;
+  id: number;
+  name?: string;
+}
