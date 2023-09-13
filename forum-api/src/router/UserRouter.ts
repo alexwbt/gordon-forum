@@ -4,7 +4,7 @@ import { useRequestHandler } from '../lib/router';
 import { CreateUserRequest, DeleteUserRequest, GetUserRequest, UpdateUserRequest } from '../schema/user';
 import { RequestHandlerError } from '../lib/error';
 
-const prisma = new PrismaClient()
+const prisma = {} as any;
 
 const userRouter = express.Router()
 

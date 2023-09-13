@@ -21,10 +21,15 @@
   },
   "dependencies": {
     "@prisma/client": "^4.15.0",
+    "@types/cookie-parser": "^1.4.4",
+    "@types/passport-google-oauth20": "^2.0.11",
     "@types/passport-local": "^1.0.35",
     "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.1",
     "passport-keycloak-bearer": "^2.4.0",
     "passport-local": "^1.0.0",
     "winston": "^3.9.0"

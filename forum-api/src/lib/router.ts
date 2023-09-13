@@ -2,7 +2,7 @@ import { RequestHandler, Router } from 'express'
 import { AnySchema, isError as isValidationError } from 'joi'
 import { RequestHandlerError } from './error'
 import logger from './logger'
-import { localPass } from './passport'
+import passport from './passport'
 
 export type RequestHandlerRequest<Query, Params, ReqBody> = {
     query: Query
@@ -91,5 +91,8 @@ export const useRequestHandler = <
         }
     }
 
-    router[method](path || "", noAuth || localPass, handler)
+    if (noAuth)
+        router[method](path || "", handler)
+    else
+        router[method](path || "", passport, handler as any)
 }
